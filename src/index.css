@@ -11,3 +11,24 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.card-post {
+  border: solid black 1px;
+  width: 20rem;
+  border-radius: 5px 5px;
+  height: 18rem;
+  text-align: center;
+  margin-right: 2rem;
+}
+.card-header, .card-body, .card-footer{
+  margin-top: 2rem;
+}
+
+.card-header em {
+  margin: 1em;
+}
+.card-container {
+  display: flex;
+  justify-content: center;
+}
+
