@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file:///Applications/MAMP/htdocs/klorel/.idea/klorel.iml" filepath="/Applications/MAMP/htdocs/klorel/.idea/klorel.iml" />
       <module fileurl="file:///Applications/MAMP/htdocs/wordpress-test/.idea/wordpress-test.iml" filepath="/Applications/MAMP/htdocs/wordpress-test/.idea/wordpress-test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/wow-ticket.iml" filepath="$PROJECT_DIR$/.idea/wow-ticket.iml" />
     </modules>

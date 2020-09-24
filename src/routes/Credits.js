@@ -11,7 +11,7 @@ const Credits = () => {
         let token = getCookie();
         let bearer = "Bearer"+token;
         /**Requête GET des packs*/
-        fetch('http://localhost:8888/wordpress-test/wp-json/wp/v2/pack',
+        fetch('http://localhost:8888/klorel/wp-json/wp/v2/tickets',
             {
                 method: 'GET',
                 headers: {
@@ -36,7 +36,7 @@ const Credits = () => {
         }).catch( err => console.log(err))
 
         /**Requête GET des inreventions*/
-        fetch('http://localhost:8888/wordpress-test/wp-json/wp/v2/intervention',
+        fetch('http://localhost:8888/klorel/wp-json/wp/v2/interventions',
             {
                 method: 'GET',
                 headers: {

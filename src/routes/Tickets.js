@@ -11,7 +11,7 @@ const Tickets = () => {
     useEffect(() => {
         const token = getCookie();
         let bearer = 'Bearer '+token+''
-        fetch('http://localhost:8888/wordpress-test/wp-json/wp/v2/posts?status=publish',
+        fetch('http://localhost:8888/klorel/wp-json/wp/v2/posts?status=publish',
             {
                 method: 'GET',
                 headers: {
