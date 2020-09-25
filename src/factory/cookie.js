@@ -1,20 +1,20 @@
 function setCookie (json) {
-    document.cookie = "token="+json.token+"; SameSite=Lax; Secure";
+    document.cookie = "klorel="+json.token+"; SameSite=Lax; Secure";
     if (json !== '') {
         window.location.pathname = '/tickets';
     }
 }
 
-function getCookie (callback) {
+function getCookie () {
     let cookies = document.cookie.split(";");
-    let cookieName = "token="
+    let cookieName = "klorel=";
+    let token = '';
     cookies.map(  c => {if (c.indexOf(cookieName) !== -1)
         {
-            let token = c.substring(cookieName.length, c.length);
-            return token
+            token = 'Bearer '+c.substring(cookieName.length, c.length);
         }
-        return null
     })
+    return token;
 }
 
 export {setCookie, getCookie}

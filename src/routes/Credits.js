@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Intervention from "../component/Intervention";
 import {getCookie} from "../factory/cookie";
+import {Menu} from "../component/Menu";
 
 const Credits = () => {
     const [pack, setPack] = useState([]);
@@ -9,14 +10,13 @@ const Credits = () => {
 
     useEffect(() => {
         let token = getCookie();
-        let bearer = "Bearer"+token;
         /**Requête GET des packs*/
         fetch('http://localhost:8888/klorel/wp-json/wp/v2/tickets',
             {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
-                    Authorization: bearer,
+                    Authorization: token,
                 }
             }
         ).then(response => {if (response.status !== 200) throw new Error(`HTTP STATUTS`+response.status);
@@ -35,13 +35,13 @@ const Credits = () => {
             setPack(tab);
         }).catch( err => console.log(err))
 
-        /**Requête GET des inreventions*/
+        /**Requête GET des interventions*/
         fetch('http://localhost:8888/klorel/wp-json/wp/v2/interventions',
             {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
-                    Authorization: bearer,
+                    Authorization: token,
                 }
             }
         ).then(response => {if (response.status !== 200) throw new Error(`HTTP STATUTS`+response.status);
@@ -76,6 +76,7 @@ const Credits = () => {
 
     return (
         <div className='wrapper credits'>
+            <Menu />
             <h1>Credits temps</h1>
             <div className='timer'>
                 <h2>Votre crédits temps actuel</h2>
