@@ -29,9 +29,8 @@ const Tickets = () => {
         ).then( response => {if (response.status !== 200) throw new Error('HTTP STATUS'+response.status); return response.json();}
         ).then( json => {
             console.log(json)
-            let data = json;
             let tab =[];
-            data.map(d => {
+            json.map(d => {
                 /**Retire balises <p></p> de la chaine de caractère*/
                 // let content = d.content['rendered'].replace("<p>", '');
                 // content = content.replace("</p>", '');

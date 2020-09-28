@@ -1,11 +1,12 @@
 import React from 'react';
 
-const Intervention = ({date, temps, content}) => {
+const Intervention = ({date, title, temps, operation, type}) => {
     return(
-        <div className='intervention'>
+        <div className="intervention">
             <h3>{date}</h3>
-            <em>{temps}</em>
-            <p>{content}</p>
+            <em className={operation}>{temps}</em>
+            <p>{title}</p>
+            <p>{type}</p>
         </div>
     )
 }

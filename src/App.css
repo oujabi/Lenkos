@@ -481,3 +481,6 @@ h1 {
   top: 0.5em;
   font-size: 1.2em;
 }
+
+.add {color: green}
+.sous {color : red}
