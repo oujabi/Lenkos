@@ -8,14 +8,15 @@ const Credits = () => {
     const [total, setTotal] = useState(0);
 
     useEffect(() => {
-        let token = getCookie();
+        let cookie = getCookie();
+        console.log(cookie['token']);
         /**Requête GET des credits d'un ticket*/
-        fetch('http://localhost:8888/klorel/wp-json/klorel/v1/tickets',
+        fetch('http://localhost:8888/klorel/wp-json/klorel/v1/credits',
             {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
-                    Authorization: token,
+                    Authorization: cookie['token'],
                 }
             }
         )

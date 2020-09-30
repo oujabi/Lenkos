@@ -11,46 +11,21 @@ const Tickets = () => {
     const [post, setPost] = useState([]);
 
     useEffect(() => {
-        const token = getCookie();
-        if (token !== '') {
-           validate(token)
+        const cookie = getCookie();
+        if (cookie['token'] !== '') {
+           validate(cookie['token']);
+            fetch('http://localhost:8888/klorel/wp-json/jwt-auth/v1/tickets',
+                {
+                    method: 'GET',
+                    headers: {Accept: 'application/json', Authorization: cookie['token']}
+                }
+            ).then( response => {if (response.status !== 200) throw new Error('HTTP STATUS'+response.status);
+            return response.json();}
+            ).then( json => {setPost(json)}
+            ).catch( err => console.log(err) )
         } else {
             window.location.pathname = '/login';
         }
-
-        fetch('http://localhost:8888/klorel/wp-json/klorel/v1/tickets',
-            {
-                method: 'GET',
-                headers: {
-                    Accept: 'application/json',
-                    Authorization: token,
-                }
-            }
-        ).then( response => {if (response.status !== 200) throw new Error('HTTP STATUS'+response.status); return response.json();}
-        ).then( json => {
-            console.log(json)
-            let tab =[];
-            json.map(d => {
-                /**Retire balises <p></p> de la chaine de caractère*/
-                // let content = d.content['rendered'].replace("<p>", '');
-                // content = content.replace("</p>", '');
-                // /** */
-                // tab.push(
-                //     {
-                //         "id": d.id,
-                //         "author": d.author,
-                //         "categorie": d.categorie,
-                //         "content": content,
-                //         "date": d.date,
-                //         "status": d.status,
-                //         "title": d.title['rendered'],
-                //         "type": d.type,
-                //     })
-                // return tab;
-            })
-            setPost(tab);
-        }
-        ).catch( err => console.log(err) )
     },[]);
 
     function handleLogOut () {

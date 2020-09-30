@@ -1,0 +1,63 @@
+import React, {useEffect, useState} from 'react';
+import {getCookie} from "../factory/cookie";
+
+function Account () {
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [passwordVerif, setPasswordVerif] = useState('');
+    const [username, setUsername] = useState('');
+
+    useEffect(() => {
+        let cookie = getCookie();
+        setUsername(cookie['username']);
+        fetch('http://localhost:8888/klorel/wp-json/klorel/v1/user/'+cookie['username']+'', {method: 'GET'})
+            .then((response) => {
+                if (response.status !== 200) throw new Error('HTTP Status'+response.status);
+                return response.json()})
+            .then((json) => {
+                setFirstName(json['first_name']);
+                setLastName(json['last_name']);
+                setEmail(json['email']);
+                setUsername(json['login']);
+                })
+            .catch((err) => (console.log(err)))
+    },[])
+
+    function send () {
+        fetch('http://localhost:8888/klorel/wp-json/klorel/v1/update/user/'+{username},
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    'email' : email,
+                    'password' : password,
+                    'username': username,
+                    }
+                )
+            })
+            .then((response) => console.log(response.status))
+    }
+    return(
+        <div>
+            <h1>Mon compte</h1>
+            <form onSubmit={send}>
+                <input type='text' readOnly value={username}/>
+                <label htmlFor="Prénom">Prénom</label>
+                <input type='text' readOnly value={firstName}/>
+                <label htmlFor="Nom">Nom</label>
+                <input type='text' readOnly value={lastName}/>
+                <label htmlFor="email">Email</label>
+                <input type='email' value={email} onChange={(e) => setEmail(e.target.value)}/>
+                <label htmlFor="Nouveau mot de passe" value={password} onChange={(e) => setPassword(e.target.value)}>Nouveau mot de passe</label>
+                <input type='password'/>
+                <label htmlFor="Répétez le mot de passe" value={passwordVerif} onChange={(e) => setPasswordVerif(e.target.value)}>Répéter le mot de passe</label>
+                <input type='password'/>
+                <input type="submit" value='je valide !'/>
+            </form>
+
+        </div>
+    );
+}
+
+export default Account;
