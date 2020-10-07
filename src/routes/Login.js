@@ -1,8 +1,9 @@
 import React, {useState} from "react";
+import Menu from "../component/Menu";
+import {auth} from "../factory/jwt-auth";
 import {setCookie} from "../factory/cookie";
-import {auth} from "../API/jwt-auth";
 
-const Login = () => {
+function Login () {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
@@ -13,6 +14,7 @@ const Login = () => {
 
     return (
         <div>
+            <Menu bool={false}/>
             <h1 className='title-login'>Lenkos Ticket</h1>
             <form className='login-form' onSubmit={redirect}>
                 <div className='login-content'>

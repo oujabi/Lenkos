@@ -20,9 +20,15 @@ function getCookie () {
             username = c.substring(c.indexOf(userKey)+userKey.length, c.length-2);
             token = 'Bearer '+c.substring(c.indexOf(tokenKey)+tokenKey.length, c.length-(userKey.length+username.length+2));
         }
+        return null
     })
     let cookieData = {'token' : token, 'username' : username}
     return cookieData;
 }
 
-export {setCookie, getCookie}
+function destroyCookie () {
+    let data = {'token' : '', 'username' : ''}
+    document.cookie = "klorel="+JSON.stringify(data)+"; SameSite=Lax; Secure";
+}
+
+export {setCookie, getCookie, destroyCookie}

@@ -12,7 +12,6 @@
   url('fonts/alfa-slab-one-v10-latin-regular.svg#AlfaSlabOne') format('svg'); /* Legacy iOS */
 }
 
-
 /* lato-300 - latin */
 @font-face {
   font-family: 'Lato';
@@ -117,7 +116,37 @@ body {
   line-height:26px;
 }
 
-/**Login page */
+.menu-nav {
+  width: 100%;
+}
+
+.menu-nav ul{
+  display: flex;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.menu-nav li {
+  width: 34%;
+  text-align: center;
+  text-decoration: none;
+  list-style: none;
+}
+
+.menu-nav li a {
+  display: block;
+  text-decoration: none;
+  background-color: #0c0c0c;
+  color: #eeeeff;
+}
+
+.menu-nav li a:hover:hover {
+  background-color: #eeeeff;
+  color:  #0c0c0c;
+}
+
+  /**Login page */
 .title-login {
   text-align: center;
   text-transform: uppercase;
@@ -259,11 +288,6 @@ body {
   font-size: 3em;
 }
 
-.modal-content {
-  position: relative;
-  top : 1em;
-}
-
 h3 {
   color: black;
   font-family: 'Alfa Slab One';
@@ -271,7 +295,7 @@ h3 {
 
 .wrap-form-ele {
   position: relative;
-  width: 41%;
+  width: 26em;
   height: 4em;
   margin-bottom: 2em;
   display: flex;
@@ -281,24 +305,22 @@ h3 {
   padding: 1%;
 }
 
-label {
+.modal-content label {
   width: 5em;
   background-color: white;
   z-index: 1;
   position: absolute;
-  right: 1em;
-  bottom: 3.25em;
 }
 
 .login-content label{
   width: 27em;
-  margin-left: 1em;
 }
 
 .wrap-input {
+  display: flex;
   position: relative;
-  width: 62em;
-  left: 17.5em;
+  text-align: center;
+  justify-content: center;
 }
 
 .modal-content label:nth-child(1){
@@ -306,10 +328,13 @@ label {
   left: 21em;
 }
 
-.wrap-input:nth-child(3) > label {
+.modal-content .wrap-input:nth-child(3) > label {
   bottom: 12.5em;
   left: 19em;
   width: 7em;
+}
+.form-account .wrap-from {
+  width: 63em;
 }
 
 .wrap-form-ele:nth-child(4) > label {
@@ -356,6 +381,13 @@ label {
   background-color: red;
 }
 
+.modal-content .wrap-input .wrap-form-ele {
+  width: 37em;
+}
+
+.form-account .wrap-form {
+  width: 100%;
+}
 
 .wrap-form-ele:nth-child(6) {
   display: flex;
@@ -484,3 +516,47 @@ h1 {
 
 .add {color: green}
 .sous {color : red}
+
+.form-account {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-account .wrap-input label{
+  height: 1em;
+  left: 23em;
+}
+
+.form-account label {
+  text-align: center;
+  display: block;
+  width: 5em;
+  position: relative;
+  bottom: 0.9em;
+  z-index: 1;
+  background: white;
+  left: 21em;
+}
+
+.form-account .wrap-input:nth-child(1) > label {
+  width: 5em;
+}
+
+.form-account .wrap-input:nth-child(4) > label, .form-account .wrap-input:nth-child(5) > label {
+  width: 11em;
+}
+
+.form-account div.wrap-input:nth-child(4), .form-account div.wrap-input:nth-child(5)
+{
+  left: -3em;
+}
+
+.modal-content .wrap-input {
+  width: 27.5em;
+}
+
+.form-account .wrap-input .wrap-form-ele{
+  right: 3.5em;
+  width: 36.5em;
+}
