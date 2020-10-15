@@ -560,3 +560,21 @@ h1 {
   right: 3.5em;
   width: 36.5em;
 }
+
+.col {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  border: solid black 1px;
+  align-items: center;
+}
+
+.wrapper-dnd {
+  width: 90%;
+  display: flex;
+}
+
+.card-post {
+  margin-bottom: 1rem;
+}
