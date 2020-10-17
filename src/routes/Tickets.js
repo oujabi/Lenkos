@@ -50,7 +50,7 @@ const Tickets = () => {
     const returnPostColumn = (colName) => {
         return post
             .filter(p => p.status === colName)
-            .map((p,index) => <CardTicket key={p.id} {...p} index={index} setPost={setPost} moveCard={moveCard}/>)
+            .map((p,index) => <CardTicket key={p.id} {...p} index={p.index} setPost={setPost} moveCard={moveCard}/>)
     }
 
     return (
