@@ -29,7 +29,17 @@ const Tickets = () => {
         } else {window.location.pathname = '/login';}
     },[]);
 
-    /**Change la position des posts dans le tableau du state post**/
+    useEffect(() => {
+        fetch('http://localhost:8888/klorel/wp-json/klorel/v1/update/tickets',
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    status: 'Backlog',
+                }),
+            })
+            .then((response) => console.log(response.status));
+    }, [post])
+
     const moveCard = (dragIndex, hoverIndex) => {
         const dragItem = post[dragIndex];
         const hoverItem = post[hoverIndex];

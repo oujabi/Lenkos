@@ -29,8 +29,9 @@ function Account () {
                 .catch((err) => (console.log(err)))
             } else {window.location.pathname = '/login'}},[])
 
-    function send () {
-        fetch('http://localhost:8888/klorel/wp-json/klorel/v1/update/user/'+{username},
+    function send (e) {
+        e.preventDefault();
+        fetch('http://localhost:8888/klorel/wp-json/klorel/v1/update/user',
             {
                 method: 'POST',
                 body: JSON.stringify({

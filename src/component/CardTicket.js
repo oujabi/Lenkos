@@ -6,7 +6,6 @@ import {ItemTypes} from "../item/ItemTypes";
 function CardTicket ({id, title, status, priority, content, index, setPost, moveCard}) {
 
     const changePostColumn = (currentPost, status) => {
-        console.log(currentPost, status);
         setPost(prevState => {
             return prevState.map(e => {
                 return {
