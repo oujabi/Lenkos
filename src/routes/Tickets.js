@@ -30,12 +30,11 @@ const Tickets = () => {
     },[]);
 
     useEffect(() => {
+        // console.log(post);
         fetch('http://localhost:8888/klorel/wp-json/klorel/v1/update/tickets',
             {
                 method: 'POST',
-                body: JSON.stringify({
-                    status: 'Backlog',
-                }),
+                body: JSON.stringify(post),
             })
             .then((response) => console.log(response.status));
     }, [post])
