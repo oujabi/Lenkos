@@ -3,10 +3,16 @@ import Menu from "../component/Menu";
 import Intervention from "../component/Intervention";
 import {validate} from "../factory/jwt-auth";
 import {getCookie} from "../factory/cookie";
+import useModal from "../hook/useModal";
+import ModalBuyCredits from "../component/ModalBuyCredits";
+import ModalShowCredits from "../component/ModalShowCredits";
 
 function Credits () {
+    const [show, toggle] = useModal();
+    const [showCredits, toggleCredits] =useModal();
     const [credits, setCredits] = useState([]);
     const [total, setTotal] = useState(0);
+    const [dataCredits, setDataCredits] = useState([]);
 
     useEffect(() => {
         const cookie = getCookie();
@@ -31,18 +37,30 @@ function Credits () {
                 .catch( err => console.log(err))
         } else {window.location.pathname = '/login'}},[]);
 
+    function dataModalCredits (date, title, temps, operation, type) {
+        setDataCredits({
+            'date': date,
+            'title': title,
+            'temps': temps,
+            'operation': operation,
+            'type': type,
+        });
+    }
+
     return (
         <div className='wrapper credits'>
             <Menu bool={true}/>
+            <ModalBuyCredits show={show} hide={toggle}/>
+            <ModalShowCredits show={showCredits} hide={toggleCredits} data={dataCredits}/>
             <h1>Credits temps</h1>
             <div className='timer'>
                 <h2>Votre crédits temps actuel</h2>
                 <div className='content-timer'>{total}</div>
             </div>
-            <button className='button credits-button'>Acheter des heures</button>
+            <button onClick={toggle} className='button credits-button'>Acheter des heures</button>
             <div className='wrap-intervention'>
                 {
-                    credits.map(p => <Intervention key={p['id']} {...p} />)
+                    credits.map(p => <Intervention key={p['id']} {...p} getData={dataModalCredits} toggle={toggleCredits}/>)
                 }
             </div>
         </div>
