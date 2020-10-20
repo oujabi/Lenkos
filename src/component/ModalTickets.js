@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
+import {getCookie} from "../factory/cookie";
 
 function ModalTickets ({show, hide}) {
     const [title, setTitle] = useState('');
@@ -9,6 +10,7 @@ function ModalTickets ({show, hide}) {
 
     function send (e) {
         e.preventDefault();
+        let cookie = getCookie();
         fetch('http://localhost:8888/klorel/wp-json/klorel/v1/new/ticket',
             {
                 method: 'POST',
@@ -16,6 +18,7 @@ function ModalTickets ({show, hide}) {
                     'title' : title,
                     'priority' : priority,
                     'description' : description,
+                    'client': cookie['username'],
                 }),
             })
         .then((response) => console.log(response.status));
@@ -39,9 +42,9 @@ function ModalTickets ({show, hide}) {
                                 <div className="wrap-form-ele">
                                     <label htmlFor="Priorité">Priorité</label>
                                     <div className='align-button'>
-                                        <button onClick={() => {setPriority('faible')}}>Faible</button>
-                                        <button onClick ={() => {setPriority('haute')}}>Haute</button>
-                                        <button onClick ={() => {setPriority('urgent')}}>Urgente</button>
+                                        <button onClick={(e) => {e.preventDefault(); setPriority('Basse')}}>Basse</button>
+                                        <button onClick ={(e) => {e.preventDefault(); setPriority('Haute')}}>Haute</button>
+                                        <button onClick ={(e) => {e.preventDefault(); setPriority('Urgent')}}>Urgent</button>
                                     </div>
                                 </div>
                                 <div className="wrap-input">
