@@ -8,9 +8,11 @@ import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import ColCard from "../component/ColCard";
 import CardTicket from "../component/CardTicket";
+import ModalShowTickets from "../component/ModalShowTickets";
 
 const Tickets = () => {
     const [show, toggle] = useModal();
+    const [showTicket, toggleTicket] =useModal();
     const [post, setPost] = useState([]);
 
     useEffect(() => {
@@ -59,7 +61,7 @@ const Tickets = () => {
     const returnPostColumn = (colName) => {
         return post
             .filter(p => p.status === colName)
-            .map((p,index) => <CardTicket key={p.id} {...p} index={p.index} setPost={setPost} moveCard={moveCard}/>)
+            .map((p,index) => <CardTicket key={p.id} {...p} index={p.index} setPost={setPost} moveCard={moveCard} toggle={toggleTicket}/>)
     }
 
     return (
@@ -68,6 +70,7 @@ const Tickets = () => {
                 <h1>Tickets</h1>
                 <button className='button button-tickets' onClick={toggle}>Nouveau Ticket</button>
                 <ModalTickets show={show} hide={toggle} />
+                <ModalShowTickets show={showTicket} hide={toggleTicket} />
                 <DndProvider backend={HTML5Backend}>
                     <div className="wrapper-dnd">
                         <ColCard title={"Nouveau"} >

@@ -3,7 +3,7 @@ import {useDrag, useDrop} from "react-dnd";
 import {ItemTypes} from "../item/ItemTypes";
 ;
 
-function CardTicket ({id, title, status, priority, content, index, setPost, moveCard}) {
+function CardTicket ({id, title, status, priority, content, index, setPost, moveCard, toggle}) {
 
     const changePostColumn = (currentPost, status) => {
         setPost(prevState => {
@@ -81,7 +81,7 @@ function CardTicket ({id, title, status, priority, content, index, setPost, move
     drag(drop(ref));
 
     return (
-        <div ref={ref} style={{opacity}} className="card-post">
+        <div ref={ref} style={{opacity}} onClick={toggle} className="card-post">
             <div className={"card-header"}>
                 <em>Index : {index}</em>
                 <em>Status: {status}</em>

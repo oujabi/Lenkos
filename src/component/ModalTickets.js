@@ -6,10 +6,11 @@ function ModalTickets ({show, hide}) {
     const [title, setTitle] = useState('');
     const [priority, setPriority] = useState('');
     const [description, setDescription] = useState('');
-    // const [attachment, setAttachment] = useState('');
+    // const attachment = React.createRef()
 
     function send (e) {
         e.preventDefault();
+        // console.log(attachment.current.files[0]);
         let cookie = getCookie();
         fetch('http://localhost:8888/klorel/wp-json/klorel/v1/new/ticket',
             {
@@ -19,7 +20,9 @@ function ModalTickets ({show, hide}) {
                     'priority' : priority,
                     'description' : description,
                     'client': cookie['username'],
+                    // 'attachment': attachment.current.files[0],
                 }),
+                // body : attachment.current.files[0],
             })
         .then((response) => console.log(response.status));
     }
@@ -54,7 +57,7 @@ function ModalTickets ({show, hide}) {
                                 </div>
                                 {/*<div className="wrap-form-ele">*/}
                                 {/*    <label htmlFor="Pièces jointes">Pièces jointes</label>*/}
-                                {/*    <input type="file"/>*/}
+                                {/*    <input type="file" ref={attachment}/>*/}
                                 {/*</div>*/}
                                 <input className='button' type="submit" value="Ajouter"/>
                             </form>
