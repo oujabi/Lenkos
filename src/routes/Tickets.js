@@ -14,6 +14,7 @@ const Tickets = () => {
     const [show, toggle] = useModal();
     const [showTicket, toggleTicket] =useModal();
     const [post, setPost] = useState([]);
+    const [data, setData] = useState({});
 
     useEffect(() => {
         const cookie = getCookie();
@@ -58,10 +59,20 @@ const Tickets = () => {
         }
     }
 
+    function dataModalTicket (index, status, title, content, priority) {
+        setData({
+            'index': index,
+            'status': status,
+            'title': title,
+            'content': content,
+            'priority': priority,
+        });
+    }
+
     const returnPostColumn = (colName) => {
         return post
             .filter(p => p.status === colName)
-            .map((p,index) => <CardTicket key={p.id} {...p} index={p.index} setPost={setPost} moveCard={moveCard} toggle={toggleTicket}/>)
+            .map((p,index) => <CardTicket key={p.id} {...p} index={p.index} setPost={setPost} moveCard={moveCard} toggle={toggleTicket} getData={dataModalTicket}/>)
     }
 
     return (
@@ -70,7 +81,7 @@ const Tickets = () => {
                 <h1>Tickets</h1>
                 <button className='button button-tickets' onClick={toggle}>Nouveau Ticket</button>
                 <ModalTickets show={show} hide={toggle} />
-                <ModalShowTickets show={showTicket} hide={toggleTicket} />
+                <ModalShowTickets show={showTicket} hide={toggleTicket} data={data}/>
                 <DndProvider backend={HTML5Backend}>
                     <div className="wrapper-dnd">
                         <ColCard title={"Nouveau"} >
