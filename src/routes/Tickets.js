@@ -12,7 +12,7 @@ import ModalShowTickets from "../component/ModalShowTickets";
 
 const Tickets = () => {
     const [show, toggle] = useModal();
-    const [showTicket, toggleTicket] =useModal();
+    const [showTicket, toggleTicket] = useModal();
     const [post, setPost] = useState([]);
     const [data, setData] = useState({});
 
@@ -74,6 +74,14 @@ const Tickets = () => {
             .filter(p => p.status === colName)
             .map((p,index) => <CardTicket key={p.id} {...p} index={p.index} setPost={setPost} moveCard={moveCard} toggle={toggleTicket} getData={dataModalTicket}/>)
     }
+
+    // const resetOverflowBody = () => {
+    //
+    // }
+    //
+    // const setOverflowBody = () => {
+    //
+    // }
 
     return (
         <div className='tickets'>
