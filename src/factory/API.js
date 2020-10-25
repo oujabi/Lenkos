@@ -54,7 +54,7 @@ const getIntervention = (callbackCredit, callbackTotal) => {
     const cookie = getCookie();
     if (cookie['token'] !== '') {
         validate(cookie['token']);
-        fetch('http://localhost:8888/klorel/wp-json/klorel/v1/credits',
+        fetch('http://localhost:8888/klorel/wp-json/klorel/v1/credits/'+cookie['username'],
             {
                 method: 'GET',
                 headers: {

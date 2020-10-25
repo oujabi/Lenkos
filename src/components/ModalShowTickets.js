@@ -2,17 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {allowOverflow} from '../utils/overflow';
 
-const ModalShowTickets = ({show, hide, index, status, title, content, priority}) => {
+const ModalShowTickets = ({show, hide, status, title, content, priority}) => {
 
-/****************** Affichage des Données du composant ******************/
+/****************** Affichage des données du composant ******************/
     return show ?
             ReactDOM.createPortal(
                 <div className={'wrap-modal'}>
                     <div className={'modal'}>
-                        <div className={'Xclose'} onClick={ () => {allowOverflow(); hide() } }>X</div>
+                        <div className={'Xclose'} onClick={ () => {allowOverflow(); hide()} }>X</div>
                         <div className={'modal-content'}>
                             <div className={'card-header'}>
-                                <em>Index : {index}</em>
                                 <em>Status: {status}</em>
                             </div>
                             <div className={'card-body content-modal-tickets'}>
