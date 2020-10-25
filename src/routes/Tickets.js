@@ -11,6 +11,7 @@ import CardTicket from "../component/CardTicket";
 import ModalShowTickets from "../component/ModalShowTickets";
 
 const Tickets = () => {
+    const [temp, setTemp] = useState(false);
     const [show, toggle] = useModal();
     const [showTicket, toggleTicket] = useModal();
     const [post, setPost] = useState([]);
@@ -27,41 +28,47 @@ const Tickets = () => {
                 }
             ).then( response => {if (response.status !== 200) throw new Error('HTTP STATUS'+response.status);
             return response.json();}
-            ).then( json => {json.map((j, index) => j.index = index ); setPost(json)}
+            ).then( json => {json.map((j, index) => j.index = index ); console.log(json); setPost(json)}
             ).catch( err => console.log(err) )
         } else {window.location.pathname = '/login';}
     },[]);
 
     useEffect(() => {
-        // console.log(post);
-        fetch('http://localhost:8888/klorel/wp-json/klorel/v1/update/tickets',
-            {
-                method: 'POST',
-                body: JSON.stringify(post),
-            })
-            .then((response) => console.log(response.status));
-    }, [post])
+        if (temp) {
+            console.log('scsdcdscsdcds', post);
+            post.map((m, index) => m.index = index);
+            console.log('prerequest',post);
+            fetch('http://localhost:8888/klorel/wp-json/klorel/v1/update/tickets',
+                {
+                    method: 'POST',
+                    body: JSON.stringify(post),
+                })
+                .then((response) => console.log(response.status));
+            setTemp(false);
+        }
+    }, [temp, post])
 
     const moveCard = (dragIndex, hoverIndex) => {
         const dragItem = post[dragIndex];
-        const hoverItem = post[hoverIndex];
-        console.log('dragItem', dragItem, 'hoverItem',hoverItem);
+        // const hoverItem = post[hoverIndex];
+        // console.log('dragItem', dragItem, 'hoverItem',hoverItem);
         if (dragItem) {
             setPost((prevState => {
+                console.log('Switch card');
                 const copiedStateArray = [...prevState];
-                console.log('copiedStateArray', copiedStateArray)
+                // console.log('copiedStateArray', copiedStateArray)
                 const prevItem = copiedStateArray.splice(hoverIndex, 1, dragItem);
-                console.log('prevItem',prevItem)
+                // console.log('prevItem',prevItem)
                 copiedStateArray.splice(dragIndex, 1, prevItem[0]);
+                // console.log('copiedStateArray', copiedStateArray);
                 console.log('copiedStateArray', copiedStateArray);
                 return copiedStateArray;
             }))
         }
     }
 
-    function dataModalTicket (index, status, title, content, priority) {
+    function dataModalTicket (title, status, content, priority) {
         setData({
-            'index': index,
             'status': status,
             'title': title,
             'content': content,
@@ -70,26 +77,29 @@ const Tickets = () => {
     }
 
     const returnPostColumn = (colName) => {
+        console.log('avant affichage', post);
         return post
             .filter(p => p.status === colName)
-            .map((p,index) => <CardTicket key={p.id} {...p} index={p.index} setPost={setPost} moveCard={moveCard} toggle={toggleTicket} getData={dataModalTicket}/>)
+            .map((p,index) => <CardTicket key={p.id} {...p} setPost={setPost} moveCard={moveCard}
+          toggle={toggleTicket} getData={dataModalTicket} resetOverflow={resetOverflow} setTemp={setTemp}/>)
     }
 
-    // const resetOverflowBody = () => {
-    //
-    // }
-    //
-    // const setOverflowBody = () => {
-    //
-    // }
+    const resetOverflow = () => {
+        window.scrollTo(0,0);
+        document.body.style = 'overflow: hidden';
+    }
+
+    const allowOverflow = () => {
+        document.body.style = 'overflow: auto';
+    }
 
     return (
         <div className='tickets'>
-                <Menu bool={true}/>
+                <Menu current={'Tickets'}/>
                 <h1>Tickets</h1>
-                <button className='button button-tickets' onClick={toggle}>Nouveau Ticket</button>
-                <ModalTickets show={show} hide={toggle} />
-                <ModalShowTickets show={showTicket} hide={toggleTicket} data={data}/>
+                <button className='button button-tickets' onClick={() => {resetOverflow(); toggle()}}>Nouveau Ticket</button>
+                <ModalTickets show={show} hide={toggle} allowOverflow={allowOverflow}/>
+                <ModalShowTickets show={showTicket} hide={toggleTicket} data={data} allowOverflow={allowOverflow}/>
                 <DndProvider backend={HTML5Backend}>
                     <div className="wrapper-dnd">
                         <ColCard title={"Nouveau"} >

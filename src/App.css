@@ -108,7 +108,6 @@
 }
 
 body {
-  overflow-y: hidden;
   font-family: Lato;
   padding:0;
   margin:0;
@@ -161,10 +160,10 @@ body {
 .login-form {
   display: flex;
   justify-content: center;
-  margin-top: 5em;
 }
 
 .login-content {
+  margin: 0;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -172,17 +171,13 @@ body {
 }
 
 .login-content label {
-  text-align:right;
   position: relative;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  margin-bottom: 3em;
+  /*margin-bottom: 3em;*/
 }
 
 .text-label {
-  left: 22em;
-  width: 4em;
+  left: 10em;
+  width: 7em;
   position: relative;
   z-index: 1;
   text-align: center;
@@ -199,13 +194,23 @@ body {
   width: 8em;
 }
 
+label[for='email']{
+  width: 6em;
+  left: 12em;
+}
+
+label[for='mot de passe'] {
+  left: 9em;
+  width: 9em;
+}
+
 .in-log-wrap {
-  width: 100%;
-  position: absolute;
+  position: relative;
+  bottom: 0.7em;
 }
 
 .in-log-wrap input {
-  width: 95%;
+  width: 15em;
   height: 2.5em;
   padding: 0em 0.5em;
   border: 1px solid black;
@@ -217,7 +222,7 @@ body {
 }
 
 .button{
-  width: 22em;
+  width: 15em;
   line-height:60px;
   border:1px solid #fff;
   background:#000;
@@ -242,7 +247,7 @@ body {
   }
 
   .button {
-    width: 310px;
+    width: 15em;
   }
 
   .text-label {
@@ -256,7 +261,6 @@ body {
 
 /**Modal*/
 .wrap-modal {
-  overflow-y: auto;
   position: absolute;
   left: 0;
   background-color: #0000009c;
@@ -266,6 +270,7 @@ body {
 }
 
 .modal {
+  overflow-y: auto;
   text-align: center;
   position: absolute;
   top: 0;
@@ -277,6 +282,12 @@ body {
   height: 100%;
 }
 
+@media screen AND (min-width: 56.25em) {
+  .modal {
+    width: 80%;
+  }
+}
+
 .modal form {
   display: flex;
   flex-direction: column;
@@ -286,7 +297,7 @@ body {
 .Xclose {
   cursor: pointer;
   position: absolute;
-  right: 0.25em;
+  right: 0.5em;
   top: 0.25em;
   font-size: 3em;
 }
@@ -298,14 +309,13 @@ h3 {
 
 .wrap-form-ele {
   position: relative;
-  width: 26em;
+  width: 18em;
   height: 4em;
   margin-bottom: 2em;
   display: flex;
   flex-direction: column;
   border: solid black 1px;
   border-radius: 5px 5px;
-  padding: 1%;
 }
 
 .modal-content label {
@@ -322,16 +332,22 @@ h3 {
   justify-content: center;
 }
 
-.modal-content label:nth-child(1){
-  bottom: 4.8em;
-  left: 21em;
+.modal-content label[for='Titre'] {
+  bottom: 4.3em;
+  left: 12em;
 }
 
-.modal-content .wrap-input:nth-child(3) > label {
-  bottom: 12.5em;
-  left: 19em;
+.modal-content label[for='Priorité']{
+  bottom: 3.3em;
+  left: 12em;
+}
+
+.modal-content label[for='description']{
+  bottom: 12em;
+  left: 10em;
   width: 7em;
 }
+
 .form-account .wrap-from {
   width: 63em;
 }
@@ -344,7 +360,7 @@ h3 {
 
 .modal-content input, .modal-content textarea
  {
-  padding: 1em;
+  padding: 0.8em;
 }
 
 .modal-content textarea{
@@ -360,6 +376,7 @@ h3 {
   justify-content: space-between;
   width: 55%;
 }
+
 .align-button button{
   width: 7em;
   height: 2em;
@@ -380,18 +397,29 @@ h3 {
   background-color: red;
 }
 
-.modal-content .wrap-input .wrap-form-ele {
-  width: 37em;
+.priority-ticket {
+  width: 18em;
+}
+
+.modal-content .wrap-input .input-ticket-titre {
+  width: 24.5em;
+}
+
+.modal-content .wrap-input .text-area-ticket {
+  width: 20.5em;
 }
 
 .form-account .wrap-form {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .wrap-form-ele:nth-child(6) {
   display: flex;
   justify-content: center;
-  width: 41.5%;
+  width: 15.5em;
 }
 
 /**Css Responsive mobile first*/
@@ -404,7 +432,7 @@ h3 {
 h1 {
   margin-bottom: 1em;
   text-transform: uppercase;
-  font-size: 2.5em;
+  font-size: 2.3em;
   text-align: center;
   color: black;
   font-family: 'Alfa Slab One';
@@ -418,8 +446,15 @@ h1 {
   overflow-y: auto;
 }
 
-.button-tickets {
+.content-modal-tickets {
+  display: flex;
+  flex-direction:column;
+  align-items: center;
   margin-bottom: 0.9em;
+}
+
+.content-modal-tickets p {
+  width: 70%;
 }
 
 .list-button {
@@ -491,6 +526,17 @@ h1 {
   box-shadow: #00000052 5px 5px 5px;
 }
 
+@media screen and (min-width: 37.5em) {
+  .intervention, .timer, .credits-button {
+    width: 37em;
+  }
+
+  .credits-button {
+    width: 25em;
+  }
+}
+
+
 .intervention h3 {
   font-size: 1em;
   font-family: Lato;
@@ -522,15 +568,19 @@ h1 {
   align-items: center;
 }
 
+.form-account.wrap-input {
+  width: 24%;
+}
+
 .form-account .wrap-input label{
+  position: absolute;
   height: 1em;
-  left: 23em;
+  bottom: 4.3em;
 }
 
 .form-account label {
   text-align: center;
   display: block;
-  width: 5em;
   position: relative;
   bottom: 0.9em;
   z-index: 1;
@@ -538,26 +588,23 @@ h1 {
   left: 21em;
 }
 
-.form-account .wrap-input:nth-child(1) > label {
-  width: 5em;
-}
-
-.form-account .wrap-input:nth-child(4) > label, .form-account .wrap-input:nth-child(5) > label {
-  width: 11em;
-}
-
-.form-account div.wrap-input:nth-child(4), .form-account div.wrap-input:nth-child(5)
-{
-  left: -3em;
-}
-
-.modal-content .wrap-input {
-  width: 27.5em;
-}
-
 .form-account .wrap-input .wrap-form-ele{
-  right: 3.5em;
-  width: 36.5em;
+  width: 25em;
+}
+
+.form-account label[for='Prénom'] {
+  width: 4em;
+  left: 12.5em;
+}
+
+.form-account label[for='Nom'], .form-account label[for='email'] {
+  width: 3em;
+  left: 13.5em;
+}
+
+.form-account label[for='Nouveau mot de passe'], .form-account label[for='Répétez le mot de passe'] {
+  width: 11em;
+  left: 5.5em;
 }
 
 /*Tickets*/
@@ -573,13 +620,19 @@ h1 {
   width: 100%;
   display: grid;
   grid-template-columns: repeat(7, minmax(12.5rem, 40rem));
-  justify-content: center;
   overflow-x: auto;
+  margin-top: 2em;
 }
 
 .card-post {
   width: 12rem;
   margin-bottom: 1rem;
   margin-right: 0;
+  box-shadow: #00000052 5px 5px 5px;
 }
+
+.card-post:hover, .intervention:hover{
+  box-shadow: none;
+}
+
 

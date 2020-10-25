@@ -3,21 +3,22 @@ import {useDrag, useDrop} from "react-dnd";
 import {ItemTypes} from "../item/ItemTypes";
 ;
 
-function CardTicket ({id, title, status, priority, content, index, setPost, moveCard, toggle, getData}) {
+function CardTicket ({id, title, status, priority, content, index, setPost, moveCard, toggle, getData, resetOverflow, setTemp}) {
 
     const changePostColumn = (currentPost, status) => {
-        setPost(prevState => {
-            return prevState.map(e => {
-                return {
-                    ...e,
-                    status: e.id === currentPost.id ? status.name : e.status,
-                }
+        if (status !== null) {
+            setPost(prevState => {
+                return prevState.map(e => {
+                    return {
+                        ...e,
+                        status: e.id === currentPost.id ? status.name : e.status,
+                    }
+                })
             })
-        })
+        }
     }
 
     const ref = useRef(null);
-
     const [, drop] = useDrop({
         accept: ItemTypes.CARDTICKET,
             hover(item, monitor) {
@@ -51,6 +52,7 @@ function CardTicket ({id, title, status, priority, content, index, setPost, move
                     return;
                 }
                 // // Time to actually perform the action
+
                 moveCard(dragIndex, hoverIndex);
                 // // Note: we're mutating the monitor item here!
                 // // Generally it's better to avoid mutations,
@@ -70,6 +72,7 @@ function CardTicket ({id, title, status, priority, content, index, setPost, move
                 },
         end: (item, monitor) => {
             changePostColumn(item, monitor.getDropResult());
+            setTemp(true);
         },
         collect : (monitor) => ({
             opacity: monitor.isDragging() ? 0 : 1,
@@ -81,14 +84,14 @@ function CardTicket ({id, title, status, priority, content, index, setPost, move
     drag(drop(ref));
 
     return (
-        <div ref={ref} style={{opacity}} onClick={() => {toggle(); getData(index, status, title, content, priority);}} className="card-post">
+        <div ref={ref} style={{opacity}} onClick={() => {toggle(); getData(title, status, content, priority); resetOverflow() }}
+             className="card-post">
             <div className={"card-header"}>
-                <em>Index : {index}</em>
                 <em>Status: {status}</em>
+                <em>index: {index}</em>
             </div>
             <div className={"card-body"}>
                 <h2>{title}</h2>
-                {content}
             </div>
             <div className="card-footer">
                 <p>Priority: {priority}</p>

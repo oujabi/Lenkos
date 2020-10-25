@@ -47,20 +47,30 @@ function Credits () {
         });
     }
 
+    const resetOverflow = () => {
+        window.scrollTo(0,0);
+        document.body.style = 'overflow: hidden';
+    }
+
+
+    const allowOverflow = () => {
+        document.body.style = 'overflow: auto';
+    }
+
     return (
         <div className='wrapper credits'>
-            <Menu bool={true}/>
-            <ModalBuyCredits show={show} hide={toggle}/>
-            <ModalShowCredits show={showCredits} hide={toggleCredits} data={dataCredits}/>
+            <Menu current={'Credits'}/>
+            <ModalBuyCredits show={show} hide={toggle} allowOverflow={allowOverflow}/>
+            <ModalShowCredits show={showCredits} hide={toggleCredits} data={dataCredits} allowOverflow={allowOverflow}/>
             <h1>Credits temps</h1>
             <div className='timer'>
                 <h2>Votre crédits temps actuel</h2>
                 <div className='content-timer'>{total}</div>
             </div>
-            <button onClick={toggle} className='button credits-button'>Acheter des heures</button>
+            <button onClick={() => {resetOverflow(); toggle(); }} className='button credits-button'>Acheter des heures</button>
             <div className='wrap-intervention'>
                 {
-                    credits.map(p => <Intervention key={p['id']} {...p} getData={dataModalCredits} toggle={toggleCredits}/>)
+                    credits.map(p => <Intervention key={p['id']} {...p} resetOverflow={resetOverflow} getData={dataModalCredits}  toggle={toggleCredits}/>)
                 }
             </div>
         </div>
