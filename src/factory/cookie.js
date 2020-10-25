@@ -1,9 +1,8 @@
 function setCookie (json) {
-    console.log(json);
     let data = {'token' : json.token, 'username' : json.user_nicename}
     document.cookie = "klorel="+JSON.stringify(data)+"; SameSite=Lax; Secure";
     if (json !== '') {
-        window.location.pathname = '/tickets';
+        window.location.pathname = '/';
     }
 }
 

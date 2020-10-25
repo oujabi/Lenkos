@@ -1,74 +1,60 @@
-import React, {useEffect, useState} from "react";
-import Menu from "../component/Menu";
-import ModalTickets from "../component/ModalTickets";
-import useModal from "../hook/useModal";
-import {validate} from "../factory/jwt-auth";
-import {getCookie} from "../factory/cookie";
-import {DndProvider} from "react-dnd";
-import {HTML5Backend} from "react-dnd-html5-backend";
-import ColCard from "../component/ColCard";
-import CardTicket from "../component/CardTicket";
-import ModalShowTickets from "../component/ModalShowTickets";
+import React, {useEffect, useState} from 'react';
+import useModal from '../utils/useModal';
+import {resetOverflow} from '../utils/overflow';
+import Menu from '../components/Menu';
+import ModalTickets from '../components/ModalTickets';
+import ColCard from '../components/ColCard';
+import CardTicket from '../components/CardTicket';
+import ModalShowTickets from '../components/ModalShowTickets';
+import {DndProvider} from 'react-dnd';
+import {HTML5Backend} from 'react-dnd-html5-backend';
+import {getTicket, updateTicket} from '../factory/API';
+
+
 
 const Tickets = () => {
-    const [temp, setTemp] = useState(false);
-    const [show, toggle] = useModal();
+/****************** Initialisation des différentes "State" avec l'utilisation des "hooks" useState (hook natif) et useModal (hook custom)******************/
+/*Les States sont des paramètres interne des composants. Ils permettent la mise à jour du composant (cycle de vie des composants).*/
+/*Les Hooks sont des fonctions commençant par 'use' et permettant la gestion des states
+[nomDustate (contient la valeur du state), setNomDuState (permet de changer la valeur du state)]*/
+/*Les Hooks custom comme useModal permettent d'extraire une logique de composant afin de pouvoir la réutiliser*/
+    const [ticket, setTicket] = useState([]);
+    const [bool, setBool] = useState(false);
+    const [dataModal, setDataModal] = useState({});
     const [showTicket, toggleTicket] = useModal();
-    const [post, setPost] = useState([]);
-    const [data, setData] = useState({});
+    const [show, toggle] = useModal();
 
-    useEffect(() => {
-        const cookie = getCookie();
-        if (cookie['token'] !== '') {
-            validate(cookie['token']);
-            fetch('http://localhost:8888/klorel/wp-json/klorel/v1/tickets/'+cookie['username'],
-                {
-                    method: 'GET',
-                    headers: {Accept: 'application/json', Authorization: cookie['token']},
-                }
-            ).then( response => {if (response.status !== 200) throw new Error('HTTP STATUS'+response.status);
-            return response.json();}
-            ).then( json => {json.map((j, index) => j.index = index ); console.log(json); setPost(json)}
-            ).catch( err => console.log(err) )
-        } else {window.location.pathname = '/login';}
-    },[]);
+/****************** Gestion du cycle de vie du composant et envoie des données à l'API ******************/
+/*useEffect est un hook natif qui permet de déclencher du code à un moment précis du cycle de vie du composant*/
+/*Le tableau des dépendances étant vide le code se déclenche à chaque évènement componentDidMount (phase de montage du composant)*/
+    useEffect(() => { getTicket(setTicket) },[]);
 
+/*tableau des dépendances contient les states bool et ticket le code se déclenche durant l'évènement componentDidUpdate (phase de Mise à jour du composant)
+quand la valeur des states bool et ticket est modifié*/
     useEffect(() => {
-        if (temp) {
-            console.log('scsdcdscsdcds', post);
-            post.map((m, index) => m.index = index);
-            console.log('prerequest',post);
-            fetch('http://localhost:8888/klorel/wp-json/klorel/v1/update/tickets',
-                {
-                    method: 'POST',
-                    body: JSON.stringify(post),
-                })
-                .then((response) => console.log(response.status));
-            setTemp(false);
+        if (bool) {
+            ticket.map((t, index) => t.index = index);
+            updateTicket(ticket);
+            setBool(false);
         }
-    }, [temp, post])
+    }, [bool, ticket])
 
+/****************** Gestion du Drag and Drop ******************/
     const moveCard = (dragIndex, hoverIndex) => {
-        const dragItem = post[dragIndex];
-        // const hoverItem = post[hoverIndex];
-        // console.log('dragItem', dragItem, 'hoverItem',hoverItem);
+        const dragItem = ticket[dragIndex];
         if (dragItem) {
-            setPost((prevState => {
-                console.log('Switch card');
+            setTicket(prevState => {
                 const copiedStateArray = [...prevState];
-                // console.log('copiedStateArray', copiedStateArray)
                 const prevItem = copiedStateArray.splice(hoverIndex, 1, dragItem);
-                // console.log('prevItem',prevItem)
                 copiedStateArray.splice(dragIndex, 1, prevItem[0]);
-                // console.log('copiedStateArray', copiedStateArray);
-                console.log('copiedStateArray', copiedStateArray);
                 return copiedStateArray;
-            }))
+            })
         }
     }
 
-    function dataModalTicket (title, status, content, priority) {
-        setData({
+/****************** Gestion des données du composant ******************/
+    const dataModalTicket = (title, status, content, priority) => {
+        setDataModal({
             'status': status,
             'title': title,
             'content': content,
@@ -77,51 +63,42 @@ const Tickets = () => {
     }
 
     const returnPostColumn = (colName) => {
-        console.log('avant affichage', post);
-        return post
-            .filter(p => p.status === colName)
-            .map((p,index) => <CardTicket key={p.id} {...p} setPost={setPost} moveCard={moveCard}
-          toggle={toggleTicket} getData={dataModalTicket} resetOverflow={resetOverflow} setTemp={setTemp}/>)
+        return ticket
+            .filter( t => t.status === colName )
+            .map( t =>
+                <CardTicket key={t.id} {...t} setTicket={setTicket} setBool={setBool} toggle={toggleTicket} moveCard={moveCard} dataModalTicket={dataModalTicket} /> )
     }
 
-    const resetOverflow = () => {
-        window.scrollTo(0,0);
-        document.body.style = 'overflow: hidden';
-    }
-
-    const allowOverflow = () => {
-        document.body.style = 'overflow: auto';
-    }
-
+/****************** Affichage des données du composant ******************/
     return (
         <div className='tickets'>
                 <Menu current={'Tickets'}/>
                 <h1>Tickets</h1>
-                <button className='button button-tickets' onClick={() => {resetOverflow(); toggle()}}>Nouveau Ticket</button>
-                <ModalTickets show={show} hide={toggle} allowOverflow={allowOverflow}/>
-                <ModalShowTickets show={showTicket} hide={toggleTicket} data={data} allowOverflow={allowOverflow}/>
+                <button className={'button button-tickets'} onClick={ () => {resetOverflow(); toggle()} }>Nouveau Ticket</button>
+                <ModalTickets show={show} hide={toggle} />
+                <ModalShowTickets show={showTicket} hide={toggleTicket} {...dataModal} />
                 <DndProvider backend={HTML5Backend}>
-                    <div className="wrapper-dnd">
-                        <ColCard title={"Nouveau"} >
-                            {returnPostColumn("Nouveau")}
+                    <div className={'wrapper-dnd'}>
+                        <ColCard title={'Nouveau'} >
+                            {returnPostColumn('Nouveau')}
                         </ColCard>
-                        <ColCard title={"Backlog"} >
-                            {returnPostColumn("Backlog")}
+                        <ColCard title={'Backlog'} >
+                            {returnPostColumn('Backlog')}
                         </ColCard>
-                        <ColCard title={"A faire"} >
-                            {returnPostColumn("A faire")}
+                        <ColCard title={'A faire'} >
+                            {returnPostColumn('A faire')}
                         </ColCard>
-                        <ColCard title={"En cours"} >
-                            {returnPostColumn("En cours")}
+                        <ColCard title={'En cours'} >
+                            {returnPostColumn('En cours')}
                         </ColCard>
-                        <ColCard title={"Validation client"} >
-                            {returnPostColumn("Validation client")}
+                        <ColCard title={'Validation client'} >
+                            {returnPostColumn('Validation client')}
                         </ColCard>
-                        <ColCard title={"Validé"} >
-                            {returnPostColumn("Validé")}
+                        <ColCard title={'Validé'} >
+                            {returnPostColumn('Validé')}
                         </ColCard>
-                        <ColCard title={"Archivé"} >
-                            {returnPostColumn("Archivé")}
+                        <ColCard title={'Archivé'} >
+                            {returnPostColumn('Archivé')}
                         </ColCard>
                     </div>
             </DndProvider>

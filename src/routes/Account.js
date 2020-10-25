@@ -1,90 +1,64 @@
 import React, {useEffect, useState} from 'react';
-import Menu from "../component/Menu";
-import {validate} from "../factory/jwt-auth";
-import {getCookie} from "../factory/cookie";
+import Menu from '../components/Menu';
+import {getUser, updateUser} from '../factory/API';
 
-function Account () {
+const Account = () => {
+/****************** Initialisation des différentes "State" avec l'utilisation des "hooks" useState******************/
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordVerif, setPasswordVerif] = useState('');
     const [username, setUsername] = useState('');
-    const [error, setError] =useState(false);
+    const [error, setError] = useState(false);
 
-    useEffect(() => {
-        const cookie = getCookie();
-        if (cookie['token'] !== '') {
-            validate(cookie['token']);
-            setUsername(cookie['username']);
-            fetch('http://localhost:8888/klorel/wp-json/klorel/v1/user/'+cookie['username']+'', {method: 'GET'})
-                .then((response) => {
-                    if (response.status !== 200) throw new Error('HTTP Status :'+response.status);
-                    return response.json()})
-                .then((json) => {
-                    setFirstName(json['first_name']);
-                    setLastName(json['last_name']);
-                    setEmail(json['email']);
-                    setUsername(json['login']);
-                    })
-                .catch((err) => (console.log(err)))
-            } else {window.location.pathname = '/login'}},[])
+/****************** Gestion du cycle de vie du composant et envoie des données à l'API ******************/
+    useEffect(() => { getUser(setFirstName, setLastName, setEmail,setUsername) }, [])
 
-    function send (e) {
-        e.preventDefault();
+    const send = (ev) => {
+        ev.preventDefault();
         if (password === passwordVerif) {
+            updateUser(email, password, username);
             setError(false);
-            fetch('http://localhost:8888/klorel/wp-json/klorel/v1/update/user',
-                {
-                    method: 'POST',
-                    body: JSON.stringify({
-                            'email' : email,
-                            'password' : password,
-                            'username': username,
-                        }
-                    ),
-                })
-                .then((response) => {
-                    if (response.status === 200) {window.location.pathname ='Account'}
-                    else {console.log(response.status)}
-                })
         } else {
             setError(true);
         }
     }
+
+/****************** Affichage des données du composant ******************/
     return(
-        <div className='wrap-account'>
+        <div className={'wrap-account'}>
             <Menu current={'Account'}/>
             <h1>Mon compte</h1>
-            <form className='form-account' onSubmit={send}>
-                <div className='wrap-form'>
-                    <div className='wrap-input'>
-                        <label htmlFor="Prénom">Prénom</label>
-                        <input className='wrap-form-ele' type='text' readOnly value={firstName}/>
+            <form className={'form-account'} onSubmit={send}>
+                <div className={'wrap-form'}>
+                    <div className={'wrap-input'}>
+                        <label htmlFor={'Prénom'}>Prénom</label>
+                        <input className={'wrap-form-ele'} type={'text'} value={firstName} readOnly />
                     </div>
-                    <div className='wrap-input'>
-                        <label htmlFor="Nom">Nom</label>
-                        <input className='wrap-form-ele' type='text' readOnly value={lastName}/>
+                    <div className={'wrap-input'}>
+                        <label htmlFor={'Nom'}>Nom</label>
+                        <input className={'wrap-form-ele'} type={'text'} readOnly value={lastName}/>
                     </div>
-                    <div className='wrap-input'>
-                        <label htmlFor="email">Email</label>
-                        <input className='wrap-form-ele' type='email' value={email} onChange={(e) => setEmail(e.target.value)}/>
+                    <div className={'wrap-input'}>
+                        <label htmlFor={'email'}>Email</label>
+                        <input className={'wrap-form-ele'} type={'email'} value={email} onChange={(ev) => setEmail(ev.target.value)}/>
                     </div>
                     <div>
                         {
                             error ? <p style={{color : 'red'}}>Les mots de passe ne sont pas identique</p> : null
                         }
                     </div>
-                    <div className='wrap-input'>
-                        <label htmlFor="Nouveau mot de passe">Nouveau mot de passe</label>
-                        <input className='wrap-form-ele' type='password' value={password} onChange={(e) => setPassword(e.target.value)}/>
+                    <div className={'wrap-input'}>
+                        <label htmlFor={'Nouveau mot de passe'}>Nouveau mot de passe</label>
+                        <input className={'wrap-form-ele'} type={'password'} value={password} onChange={(ev) => setPassword(ev.target.value)}/>
                     </div>
-                    <div className='wrap-input'>
-                        <label htmlFor="Répétez le mot de passe" >Répéter le mot de passe</label>
-                        <input className='wrap-form-ele' type='password' value={passwordVerif} onChange={(e) => setPasswordVerif(e.target.value)}/>
+                    <div className={'wrap-input'}>
+                        <label htmlFor={'Répétez le mot de passe'} >Répéter le mot de passe</label>
+                        <input className={'wrap-form-ele'} type={'password'} value={passwordVerif} onChange={(ev) => setPasswordVerif(ev.target.value)}/>
                     </div>
-                    <div className="wrap-input">
-                        <input className="button" type="submit" value='je valide !'/>
+                    <div className={'wrap-input'}>
+                        <input className={'button'} type={'submit'} value={'je valide !'}/>
                     </div>
                 </div>
             </form>

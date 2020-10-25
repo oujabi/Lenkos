@@ -1,5 +1,5 @@
 import {useState} from 'react';
-
+/*Permet l'ouverture et la fermeture des modals*/
 function useModal () {
     const [show, setShow] = useState(false);
 

@@ -1,19 +1,14 @@
-import React, {useRef} from "react";
-import {useDrag, useDrop} from "react-dnd";
-import {ItemTypes} from "../item/ItemTypes";
-;
+import React, {useRef} from 'react';
+import {useDrag, useDrop} from 'react-dnd';
+import {ItemTypes} from '../utils/ItemTypes';
+import {resetOverflow} from '../utils/overflow';
 
-function CardTicket ({id, title, status, priority, content, index, setPost, moveCard, toggle, getData, resetOverflow, setTemp}) {
-
+const CardTicket = ({id, title, status, content, priority, index, setTicket, moveCard, toggle, dataModalTicket, setBool}) => {
+/****************** Gestion du Drag and Drop ******************/
     const changePostColumn = (currentPost, status) => {
         if (status !== null) {
-            setPost(prevState => {
-                return prevState.map(e => {
-                    return {
-                        ...e,
-                        status: e.id === currentPost.id ? status.name : e.status,
-                    }
-                })
+            setTicket(prevState => {
+                return prevState.map( e => { return {...e, status: e.id === currentPost.id ? status.name : e.status} } )
             })
         }
     }
@@ -54,11 +49,6 @@ function CardTicket ({id, title, status, priority, content, index, setPost, move
                 // // Time to actually perform the action
 
                 moveCard(dragIndex, hoverIndex);
-                // // Note: we're mutating the monitor item here!
-                // // Generally it's better to avoid mutations,
-                // // but it's good here for the sake of performance
-                // // to avoid expensive index searches.
-                // item.index = hoverIndex;
             },
         })
 
@@ -72,28 +62,26 @@ function CardTicket ({id, title, status, priority, content, index, setPost, move
                 },
         end: (item, monitor) => {
             changePostColumn(item, monitor.getDropResult());
-            setTemp(true);
+            setBool(true);
         },
         collect : (monitor) => ({
             opacity: monitor.isDragging() ? 0 : 1,
         })
     })
 
-    const opacity = isDragging ? 0.4 : 1;
-
     drag(drop(ref));
 
+/****************** Affichage des données du composant ******************/
     return (
-        <div ref={ref} style={{opacity}} onClick={() => {toggle(); getData(title, status, content, priority); resetOverflow() }}
-             className="card-post">
-            <div className={"card-header"}>
+        <div ref={ref} style={{opacity : isDragging ? 0.4 : 1}} onClick={() => {toggle(); dataModalTicket(title, status, content, priority); resetOverflow() }}
+             className={'card-post'}>
+            <div className={'card-header'}>
                 <em>Status: {status}</em>
-                <em>index: {index}</em>
             </div>
-            <div className={"card-body"}>
+            <div className={'card-body'}>
                 <h2>{title}</h2>
             </div>
-            <div className="card-footer">
+            <div className={'card-footer'}>
                 <p>Priority: {priority}</p>
             </div>
         </div>
